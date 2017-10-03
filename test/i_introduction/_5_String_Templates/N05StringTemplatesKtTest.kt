@@ -17,4 +17,8 @@ class N05StringTemplatesKtTest {
     @Test fun doNotMatch() {
         assertFalse("24 RRR 1957".matches(task5().toRegex()))
     }
+
+//    @Test fun match2my() {
+//        assertFalse("24 AUG    1957".matches(task5().toRegex()))
+//    }
 }

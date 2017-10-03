@@ -2,6 +2,7 @@ package i_introduction._5_String_Templates
 
 import util.TODO
 import util.doc5
+import java.util.regex.Pattern
 
 fun example1(a: Any, b: Any) =
         "This is some text in which variables ($a, $b) appear."
@@ -35,4 +36,6 @@ fun todoTask5(): Nothing = TODO(
     documentation = doc5(),
     references = { getPattern(); month })
 
-fun task5(): String = todoTask5()
+fun task5(): String {
+    return """\d{2}\s$month\s\d{4}"""
+}
