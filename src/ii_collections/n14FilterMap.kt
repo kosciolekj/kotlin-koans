@@ -1,5 +1,7 @@
 package ii_collections
 
+import com.sun.xml.internal.fastinfoset.util.StringArray
+
 fun example1(list: List<Int>) {
 
     // If a lambda has exactly one parameter, that parameter can be accessed as 'it'
@@ -10,12 +12,18 @@ fun example1(list: List<Int>) {
 
 fun Shop.getCitiesCustomersAreFrom(): Set<City> {
     // Return the set of cities the customers are from
-    todoCollectionTask()
+
+//    val cities : ArrayList<City> = arrayListOf()
+//    for (customer in this.customers)
+//        cities.add(customer.city)
+//    return cities.toSet()
+
+    return this.customers.map { it.city }.toSet()
 }
 
 fun Shop.getCustomersFrom(city: City): List<Customer> {
     // Return a list of the customers who live in the given city
-    todoCollectionTask()
+    return this.customers.filter { it.city == city }
 }
 
 
