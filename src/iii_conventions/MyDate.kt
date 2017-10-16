@@ -1,5 +1,6 @@
 package iii_conventions
 
+import java.sql.Time
 import java.util.*
 
 data class MyDate(val year: Int, val month: Int, val dayOfMonth: Int) : Comparable<MyDate> {
@@ -12,6 +13,21 @@ data class MyDate(val year: Int, val month: Int, val dayOfMonth: Int) : Comparab
     }
 }
 
+class MyDateIterator(val dateRange: DateRange) : Iterator<MyDate> {
+    var current: MyDate = dateRange.start
+
+    override fun hasNext(): Boolean {
+        return current <= dateRange.endInclusive
+    }
+
+    override fun next(): MyDate {
+        val res = current
+        current = current.addTimeIntervals(TimeInterval.DAY, 1)
+        return res
+    }
+
+}
+
 operator fun MyDate.rangeTo(other: MyDate): DateRange {
     return DateRange(this, other)
 }
@@ -22,9 +38,10 @@ enum class TimeInterval {
     YEAR
 }
 
-class DateRange(val start: MyDate, val endInclusive: MyDate) {
-
-
+class DateRange(val start: MyDate, val endInclusive: MyDate) : Iterable<MyDate> {
+    override fun iterator(): Iterator<MyDate> {
+        return MyDateIterator(this)
+    }
 
     operator fun contains(d: MyDate): Boolean {
         val dCal: Calendar = Calendar.getInstance()
@@ -42,3 +59,7 @@ class DateRange(val start: MyDate, val endInclusive: MyDate) {
 
 }
 
+class RepeatedTimeIntervals(val ti: TimeInterval, val times: Int)
+operator fun TimeInterval.times(number: Int) = RepeatedTimeIntervals(this, number)
+operator fun MyDate.plus(ti: TimeInterval) = addTimeIntervals(ti, 1)
+operator fun MyDate.plus(ti: RepeatedTimeIntervals) = addTimeIntervals(ti.ti, ti.times)
